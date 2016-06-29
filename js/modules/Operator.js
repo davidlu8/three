@@ -51,7 +51,6 @@ Operator.prototype.render = function() {
     if ( builder.isUserInteracting === false ) {
         builder.lon += 0.1;
     }
-    console.log(builder.lat);
     builder.lat = Math.max( - 85, Math.min( 85, builder.lat ) );
     builder.phi = THREE.Math.degToRad( 90 - builder.lat );
     builder.theta = THREE.Math.degToRad( builder.lon );

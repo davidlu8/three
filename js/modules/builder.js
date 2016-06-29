@@ -99,7 +99,7 @@ Builder.prototype.initObjects = function() {
     var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, map: context } );
     cube = new THREE.Mesh( geometry, material );
     cube.position.x = 0;
-    cube.position.y = 0;
+    cube.position.y = 50;
     cube.position.z = 0;
     this.scene.add(cube);
     this.objects.push( cube );
