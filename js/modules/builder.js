@@ -8,7 +8,7 @@ function Builder() {
     this.objects = [];
     this.renderer;
     this.background;
-    this.lights;
+    this.lights = [];
 
     this.onPointerDownPointerX;
     this.onPointerDownPointerY;
@@ -66,6 +66,11 @@ Builder.prototype.initSettingbar = function() {
 }
 
 Builder.prototype.initBackground = function() {
+    var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
+    geometry.rotateX( - Math.PI / 2 );
+    var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
+    this.scene.add( plane );
+
     var size = 500, step = 50;
     var geometry = new THREE.Geometry();
     for ( var i = - size; i <= size; i += step ) {
@@ -103,4 +108,30 @@ Builder.prototype.initObjects = function() {
     cube.position.z = 0;
     this.scene.add(cube);
     this.objects.push( cube );
+
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+        console.log( item, loaded, total );
+    };
+    var texture = new THREE.Texture();
+    var onProgress = function ( xhr ) {
+        if ( xhr.lengthComputable ) {
+            var percentComplete = xhr.loaded / xhr.total * 100;
+            console.log( Math.round(percentComplete, 2) + '% downloaded' );
+        }
+    };
+    var onError = function ( xhr ) {
+    };
+    var loader = new THREE.OBJLoader( manager );
+    loader.load( 'objects/box.obj', function ( object ) {
+        object.traverse( function ( child ) {
+            if ( child instanceof THREE.Mesh ) {
+                child.material.map = texture;
+            }
+        } );
+        object.position.x = 100;
+        object.position.y = 0;
+        object.position.z = 100;
+        builder.scene.add( object );
+    }, onProgress, onError );
 }
