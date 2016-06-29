@@ -9,5 +9,5 @@ Builder.prototype.background = function() {
     alert(this.scene);
 }
 
-var builder = new Builder('11');
+var builder = new Builder('eee');
 builder.background();
