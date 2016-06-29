@@ -8,6 +8,3 @@ function Builder(scene) {
 Builder.prototype.background = function() {
     alert(this.scene);
 }
-
-var builder = new Builder('eee');
-builder.background();
