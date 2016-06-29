@@ -4,6 +4,15 @@
 
 function Operator() {};
 
+Operator.prototype.initialize = function() {
+    //初始化事件监听
+    window.addEventListener( 'resize', this.onWindowResize, false );
+    document.addEventListener( 'mousedown', this.onDocumentMouseDown, false );
+    document.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
+    document.addEventListener( 'mouseup', this.onDocumentMouseUp, false );
+    document.addEventListener( 'mousewheel', this.onDocumentMouseWheel, false );
+};
+
 Operator.prototype.onWindowResize = function() {
     var windowHalfX = window.innerWidth / 2;
     var windowHalfY = window.innerHeight / 2;
