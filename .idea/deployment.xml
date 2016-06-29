@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="vagrant" uploadOnCheckin="a62c6313-231e-42b3-b517-e2f984061eb4">
+    <serverData>
+      <paths name="vagrant">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/webser/www/three" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="vagrant" />
+  </component>
+</project>
