@@ -1,10 +1,12 @@
 /**
  * Created by luw on 2016/6/29.
  */
-function Builder() {
+function Builder(bgWidth, bgHeight) {
     //场景相关属性
     this.container;
     this.scene;
+    this.bgWidth = bgWidth;
+    this.bgHeight = bgHeight;
     this.camera;
     this.objects = [];
     this.renderer;
@@ -65,6 +67,7 @@ Builder.prototype.initScene = function() {
 //初始化摄像头
 Builder.prototype.initCamera = function() {
     this.camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+    //this.camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, 1, 1000 );
     this.camera.position.y = 200;
     this.camera.position.z = 500;
 }
@@ -94,12 +97,12 @@ Builder.prototype.initLight = function() {
 }
 
 Builder.prototype.initBackground = function() {
-    var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
-    geometry.rotateX( - Math.PI / 2 );
-    var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xcccccc, visible: true } ) );
-    this.scene.add( plane );
+    //var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
+    //geometry.rotateX( - Math.PI / 2 );
+    //var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xcccccc, visible: true } ) );
+    //this.scene.add( plane );
 
-    var size = 500, step = 50;
+    var size = this.bgWidth, step = this.bgWidth / 5;
     var geometry = new THREE.Geometry();
     for ( var i = - size; i <= size; i += step ) {
         geometry.vertices.push( new THREE.Vector3( - size, 0, i ) );
