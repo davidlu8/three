@@ -14,6 +14,7 @@ function Builder() {
     this.onPointerDownPointerY;
     this.onPointerDownLon;
     this.onPointerDownLat;
+    this.onPointerDownDistance
     this.isUserInteracting = false;
     this.lon = 90;
     this.lat = 15;
@@ -66,10 +67,10 @@ Builder.prototype.initSettingbar = function() {
 }
 
 Builder.prototype.initBackground = function() {
-    var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
-    geometry.rotateX( - Math.PI / 2 );
-    var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
-    this.scene.add( plane );
+    //var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
+    //geometry.rotateX( - Math.PI / 2 );
+    //var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: true } ) );
+    //this.scene.add( plane );
 
     var size = 500, step = 50;
     var geometry = new THREE.Geometry();
