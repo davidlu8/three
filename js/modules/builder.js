@@ -2,6 +2,7 @@
  * Created by luw on 2016/6/29.
  */
 function Builder() {
+    //场景相关属性
     this.container;
     this.scene;
     this.camera;
@@ -10,6 +11,7 @@ function Builder() {
     this.background;
     this.lights = [];
 
+    //鼠标事件相关属性
     this.onPointerDownPointerX;
     this.onPointerDownPointerY;
     this.onPointerDownLon;
@@ -20,7 +22,12 @@ function Builder() {
     this.lat = 15;
     this.phi = 0;
     this.theta = 0;
+
+    //选中事件相关属性
+    this.raycaster;
     this.mouse;
+    this.control;
+    this.selected = null;
 }
 
 Builder.prototype.initialize = function() {
@@ -38,6 +45,9 @@ Builder.prototype.initialize = function() {
 
     //初始化渲染器
     this.initRenderer();
+
+    //初始化控制器
+    this.initControl();
 
 };
 
@@ -102,6 +112,13 @@ Builder.prototype.initBackground = function() {
     this.scene.add( line );
 }
 
+
+Builder.prototype.initControl = function() {
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.control = new THREE.TransformControls( this.camera, this.renderer.domElement );
+}
+
 Builder.prototype.initRenderer = function() {
     //this.renderer = new THREE.CanvasRenderer();
     this.renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -132,6 +149,25 @@ Builder.prototype.initObjects = function() {
     cube.receiveShadow = true;
     this.scene.add(cube);
     this.objects.push( cube );
+
+    var geometry = new THREE.BoxGeometry( 20, 30, 150 );
+    for ( var i = 0; i < geometry.faces.length; i += 2 ) {
+        var hex = Math.random() * 0xffffff;
+        //var hex = 0x1133ff;
+        geometry.faces[ i ].color.setHex( hex );
+        geometry.faces[ i + 1 ].color.setHex( hex );
+    }
+    var context = new THREE.ImageUtils.loadTexture("/images/bg-02.jpg");
+    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, map: context } );
+    cube = new THREE.Mesh( geometry, material );
+    cube.position.x = -100;
+    cube.position.y = 15;
+    cube.position.z = 100;
+    cube.castShadow = true;
+    cube.receiveShadow = true;
+    this.scene.add(cube);
+    this.objects.push( cube );
+
 
     var onProgress = function ( xhr ) {
         if ( xhr.lengthComputable ) {
