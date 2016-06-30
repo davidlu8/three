@@ -33,8 +33,12 @@ Builder.prototype.initialize = function() {
     //初始化摄像头
     this.initCamera();
 
+    //初始化灯光
+    this.initLight();
+
     //初始化渲染器
     this.initRenderer();
+
 };
 
 //初始化容器
@@ -66,11 +70,24 @@ Builder.prototype.initSettingbar = function() {
 
 }
 
+
+Builder.prototype.initLight = function() {
+    this.scene.add( new THREE.AmbientLight( 0x505050 ) );
+    var light = new THREE.SpotLight( 0xffffff, 1.5 );
+    light.position.set( 500, 500, 500 );
+    light.castShadow = true;
+    light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 200, 10000 ) );
+    light.shadow.bias = - 0.00022;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+    this.scene.add( light );
+}
+
 Builder.prototype.initBackground = function() {
-    //var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
-    //geometry.rotateX( - Math.PI / 2 );
-    //var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: true } ) );
-    //this.scene.add( plane );
+    var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
+    geometry.rotateX( - Math.PI / 2 );
+    var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xcccccc, visible: true } ) );
+    this.scene.add( plane );
 
     var size = 500, step = 50;
     var geometry = new THREE.Geometry();
@@ -80,16 +97,20 @@ Builder.prototype.initBackground = function() {
         geometry.vertices.push( new THREE.Vector3( i, 0, - size ) );
         geometry.vertices.push( new THREE.Vector3( i, 0,   size ) );
     }
-    var material = new THREE.LineBasicMaterial( { color: 0x000000, opacity: 0.2 } );
+    var material = new THREE.LineBasicMaterial( { color: 0x999999, opacity: 0.2 } );
     var line = new THREE.LineSegments( geometry, material );
     this.scene.add( line );
 }
 
 Builder.prototype.initRenderer = function() {
-    this.renderer = new THREE.CanvasRenderer();
+    //this.renderer = new THREE.CanvasRenderer();
+    this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     this.renderer.setClearColor( 0xf0f0f0 );
     this.renderer.setPixelRatio( window.devicePixelRatio );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFShadowMap;
+
     this.container.appendChild( this.renderer.domElement );
 }
 
@@ -101,38 +122,37 @@ Builder.prototype.initObjects = function() {
         geometry.faces[ i ].color.setHex( hex );
         geometry.faces[ i + 1 ].color.setHex( hex );
     }
-    var context = new THREE.ImageUtils.loadTexture("images/bg-02.jpg");
+    var context = new THREE.ImageUtils.loadTexture("/images/bg-02.jpg");
     var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, map: context } );
     cube = new THREE.Mesh( geometry, material );
     cube.position.x = 0;
     cube.position.y = 50;
     cube.position.z = 0;
+    cube.castShadow = true;
+    cube.receiveShadow = true;
     this.scene.add(cube);
     this.objects.push( cube );
 
-    var manager = new THREE.LoadingManager();
-    manager.onProgress = function ( item, loaded, total ) {
-        console.log( item, loaded, total );
-    };
-    var texture = new THREE.Texture();
     var onProgress = function ( xhr ) {
         if ( xhr.lengthComputable ) {
             var percentComplete = xhr.loaded / xhr.total * 100;
             console.log( Math.round(percentComplete, 2) + '% downloaded' );
         }
     };
-    var onError = function ( xhr ) {
-    };
-    var loader = new THREE.OBJLoader( manager );
-    loader.load( 'obj/box.obj', function ( object ) {
-        object.traverse( function ( child ) {
-            if ( child instanceof THREE.Mesh ) {
-                child.material.map = texture;
-            }
-        } );
-        object.position.x = 100;
-        object.position.y = 0;
-        object.position.z = 100;
-        builder.scene.add( object );
-    }, onProgress, onError );
+    var onError = function ( xhr ) { };
+    THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setPath( 'obj/' );
+    mtlLoader.load( 'box02.mtl', function( materials ) {
+        materials.preload();
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials( materials );
+        objLoader.setPath( 'obj/' );
+        objLoader.load( 'box02.obj', function ( object ) {
+            object.position.y = 50;
+            object.position.x = 100;
+            object.position.z = 100;
+            builder.scene.add( object );
+        }, onProgress, onError );
+    });
 }
