@@ -11,6 +11,10 @@ Operator.prototype.initialize = function() {
     document.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
     document.addEventListener( 'mouseup', this.onDocumentMouseUp, false );
     document.addEventListener( 'mousewheel', this.onDocumentMouseWheel, false );
+
+    document.addEventListener( 'touchstart', this.onDocumentTouchStart, false );
+    document.addEventListener( 'touchmove', this.onDocumentTouchMove, false );
+    document.addEventListener( 'touchend', this.onDocumentTouchEnd, false );
 };
 
 Operator.prototype.onWindowResize = function() {
@@ -45,6 +49,36 @@ Operator.prototype.onDocumentMouseUp = function( event ) {
 Operator.prototype.onDocumentMouseWheel = function( event ) {
     builder.camera.fov -= event.wheelDeltaY * 0.05;
     builder.camera.updateProjectionMatrix();
+}
+
+Operator.prototype.onDocumentTouchStart = function( event ) {
+    if ( event.touches.length == 1 ) {
+        event.preventDefault();
+        builder.isUserInteracting = true;
+        builder.onPointerDownPointerX = event.touches[ 0 ].pageX;
+        builder.onPointerDownPointerY = event.touches[ 0 ].pageY;
+        builder.onPointerDownLon = builder.lon;
+        builder.onPointerDownLat = builder.lat;
+    } else if ( event.touches.length == 2 ) {
+        builder.onPointerDownDistance = pointerDistance(event.touches[ 0 ], event.touches[ 1 ]);
+    }
+}
+
+Operator.prototype.onDocumentTouchMove = function( event ) {
+    if ( event.touches.length == 1 ) {
+        event.preventDefault();
+        if ( builder.isUserInteracting === true ) {
+            builder.lon = ( builder.onPointerDownPointerX - event.touches[ 0 ].pageX ) * 0.1 + builder.onPointerDownLon;
+            builder.lat = ( event.touches[ 0 ].pageY - builder.onPointerDownPointerY ) * 0.1 + builder.onPointerDownLat;
+        }
+    } else if ( event.touches.length == 2 ) {
+        builder.camera.fov -= (pointerDistance(event.touches[ 0 ], event.touches[ 1 ]) - builder.onPointerDownDistance) * 0.005;
+        builder.camera.updateProjectionMatrix();
+    }
+}
+
+Operator.prototype.onDocumentTouchEnd = function( event ) {
+    builder.isUserInteracting = false;
 }
 
 Operator.prototype.render = function() {

@@ -124,7 +124,7 @@ Builder.prototype.initObjects = function() {
     var onError = function ( xhr ) {
     };
     var loader = new THREE.OBJLoader( manager );
-    loader.load( 'objects/box.obj', function ( object ) {
+    loader.load( 'obj/box.obj', function ( object ) {
         object.traverse( function ( child ) {
             if ( child instanceof THREE.Mesh ) {
                 child.material.map = texture;
