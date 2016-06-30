@@ -85,22 +85,38 @@ Builder.prototype.initSettingbar = function() {
 
 
 Builder.prototype.initLight = function() {
-    this.scene.add( new THREE.AmbientLight( 0x505050 ) );
-    var light = new THREE.SpotLight( 0xffffff, 1.5 );
-    light.position.set( 500, 500, 500 );
-    light.castShadow = true;
-    light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 200, 10000 ) );
-    light.shadow.bias = - 0.00022;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
-    this.scene.add( light );
+    //this.scene.add( new THREE.AmbientLight( 0x505050 ) );
+    //var light = new THREE.SpotLight( 0xffffff, 1.5 );
+    //light.position.set( 500, 500, 500 );
+    //light.castShadow = true;
+    //light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 200, 10000 ) );
+    //light.shadow.bias = - 0.00022;
+    //light.shadow.mapSize.width = 2048;
+    //light.shadow.mapSize.height = 2048;
+    //this.scene.add( light );
+    spotLight = new THREE.SpotLight(0xcccccc, 2);
+    spotLight.castShadow = true;
+    spotLight.angle = 15;
+    spotLight.penumbra = 1;
+    spotLight.decay = 1.5;
+    spotLight.distance = 1000;
+
+    spotLight.position.set(0, 500, 0);
+    spotLight.shadow.mapSize.width = spotLight.shadow.mapSize.height = 1024;
+    this.scene.add(spotLight);
+    this.scene.add(new THREE.SpotLightHelper(spotLight));
+
+    var ambient = new THREE.AmbientLight( 0x666666 );
+    this.scene.add( ambient );
+
 }
 
 Builder.prototype.initBackground = function() {
-    //var geometry = new THREE.PlaneBufferGeometry( 500, 500 );
-    //geometry.rotateX( - Math.PI / 2 );
-    //var plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0xcccccc, visible: true } ) );
-    //this.scene.add( plane );
+    var geometry = new THREE.PlaneGeometry( this.bgWidth * 2, this.bgHeight * 2 );
+    geometry.rotateX( - Math.PI / 2 );
+    var plane = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: 0xcccccc, visible: true } ) );
+    plane.receiveShadow = true;
+    this.scene.add( plane );
 
     var size = this.bgWidth, step = this.bgWidth / 5;
     var geometry = new THREE.Geometry();
@@ -143,7 +159,7 @@ Builder.prototype.initObjects = function() {
         geometry.faces[ i + 1 ].color.setHex( hex );
     }
     var context = new THREE.ImageUtils.loadTexture("/images/bg-02.jpg");
-    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, map: context } );
+    var material = new THREE.MeshPhongMaterial( {map: context} );
     cube = new THREE.Mesh( geometry, material );
     cube.position.x = 0;
     cube.position.y = 50;
@@ -153,7 +169,7 @@ Builder.prototype.initObjects = function() {
     this.scene.add(cube);
     this.objects.push( cube );
 
-    var geometry = new THREE.BoxGeometry( 20, 30, 150 );
+    var geometry = new THREE.BoxGeometry( 20, 120, 150 );
     for ( var i = 0; i < geometry.faces.length; i += 2 ) {
         var hex = Math.random() * 0xffffff;
         //var hex = 0x1133ff;
@@ -161,16 +177,30 @@ Builder.prototype.initObjects = function() {
         geometry.faces[ i + 1 ].color.setHex( hex );
     }
     var context = new THREE.ImageUtils.loadTexture("/images/bg-02.jpg");
-    var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5, map: context } );
+    var material = new THREE.MeshPhongMaterial();
     cube = new THREE.Mesh( geometry, material );
     cube.position.x = -100;
-    cube.position.y = 15;
+    cube.position.y = 60;
     cube.position.z = 100;
     cube.castShadow = true;
     cube.receiveShadow = true;
     this.scene.add(cube);
     this.objects.push( cube );
 
+    var group = new THREE.Group();
+    this.scene.add(group);
+    this.objects.push(group);
+    for(var i = 1; i <= 3; i++) {
+        var geometry = new THREE.BoxGeometry(20, 20, 20);
+        var material = new THREE.MeshPhongMaterial();
+        var cube = new THREE.Mesh( geometry, material );
+        cube.castShadow = true;
+        cube.position.set(30*i, 30*i, 30*i);
+        group.add(cube);
+    }
+    builder.control = new THREE.TransformControls( builder.camera, builder.renderer.domElement );
+    builder.control.attach(group);
+    builder.scene.add(builder.control);
 
     var onProgress = function ( xhr ) {
         if ( xhr.lengthComputable ) {
@@ -179,19 +209,38 @@ Builder.prototype.initObjects = function() {
         }
     };
     var onError = function ( xhr ) { };
+
     THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
     var mtlLoader = new THREE.MTLLoader();
     mtlLoader.setPath( 'obj/' );
-    mtlLoader.load( 'box02.mtl', function( materials ) {
+    mtlLoader.load( 'house.mtl', function( materials ) {
         materials.preload();
         var objLoader = new THREE.OBJLoader();
         objLoader.setMaterials( materials );
         objLoader.setPath( 'obj/' );
-        objLoader.load( 'box02.obj', function ( object ) {
+        objLoader.load( 'house.obj', function ( object ) {
             object.position.y = 50;
             object.position.x = 100;
             object.position.z = 100;
-            builder.scene.add( object );
+            object.traverse( function ( child ) {
+                if ( child instanceof THREE.Mesh ) {
+                    child.scale.set(20, 20, 20);
+                    child.castShadow = true;
+                    builder.scene.add( object );
+                    builder.objects.push( child );
+
+                    child.geometry.computeBoundingBox();
+                    var bb = child.geometry.boundingBox;
+                    console.log((bb.max.x - bb.min.x) + ','+(bb.max.y - bb.min.y) + ','+(bb.max.z - bb.min.z));
+                }
+            } );
+            //object.scale.set(20, 20, 20);
+            //builder.scene.add(object);
+            //builder.objects.push(object);
+            //builder.control = new THREE.TransformControls( builder.camera, builder.renderer.domElement );
+            //builder.control.attach(group);
+            //builder.scene.add(builder.control);
+
         }, onProgress, onError );
     });
 }
