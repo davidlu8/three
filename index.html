@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>黑贝雷</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style>
+        body {
+            font-family: Monospace;
+            background-color: #f0f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+    <script src="src/three.js"></script>
+    <script src="js/objects/ShadowMesh.js"></script>
+    <script src="js/renderers/Projector.js"></script>
+    <script src="js/renderers/CanvasRenderer.js"></script>
+    <script src="js/controls/EditorControls.js"></script>
+    <script src="js/controls/TransformControls.js"></script>
+    <script src="js/modules/builder.js"></script>
+    <script src="js/modules/operator.js"></script>
+    <script src="js/modules/loader.js"></script>
+    <script src="js/modules/functions.js"></script>
+    <script src="js/loaders/DDSLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div class="body-border"></div>
+<div class="body-wrapper">
+    <div class="column">
+        <img src="images/beret.png"/><br/>
+        <span class="desc"> 黑贝雷参赛演示作品</span>
+    </div>
+    <div class="column">
+        <div class="left">
+            模拟装修<br/>
+            <a href="indoor_show.html"><img src="images/indoor_show.png"/></a>
+        </div>
+        <div class="right">3D验房<br/>
+            <a href="inspection_show.html"><img src="images/inspection_show.png"/> </a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="column">
+        <div style="text-align:left;font-size: 15px;"> 产品价值和创意：
+            <br/>
+            交互体验的模拟装修房间，可以拖拉摆放家具，旋转方位。
+            <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;————— 增加云服务对购房后业主的粘度；或者与外部家具商城合作导流。
+            <br/>
+            3D的移动验房，问题点标注。<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;———— 由原来的二维平面提升为三维验房体验、增进标记时的立体感
+            <br/>
+            <br/>
+            技术亮点：
+            <br/>
+            使用HTML5及WebGL等技术，在PC, Pad, Phone全平台上无缝实现真三维体验。
+            <br/>
+            支持对3D物体模型导入。
+            <br/>
+            旋转、拖放、标记、擦除行为封装。
+        </div>
+    </div>
+
+    <div class="column last">
+        <img src="images/comment.png"/>
+    </div>
+</div>
+<div class="body-border"></div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+# Blender MTL File: 'None'
+# Material Count: 3
+
+newmtl obj/sofa01/dark_leather_leather_bump.jpg
+Ns 25.490196
+Ka 0.000000 0.000000 0.000000
+Kd 0.211765 0.168627 0.125490
+Ks 0.319237 0.319237 0.319237
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd obj/sofa01/leather_bump.jpg
+
+newmtl tacks
+Ns 94.117647
+Ka 0.000000 0.000000 0.000000
+Kd 0.370196 0.379608 0.059608
+Ks 1.188404 1.188404 1.188404
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl obj/sofa01/wooden_leg_wood_for_legs.jpg
+Ns 94.117647
+Ka 0.000000 0.000000 0.000000
+Kd 0.385882 0.203922 0.050196
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd obj/sofa01/wood_for_legs.jpg

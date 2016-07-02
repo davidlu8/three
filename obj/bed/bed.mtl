@@ -1,0 +1,25 @@
+# Blender MTL File: 'bed1.blend'
+# Material Count: 2
+
+newmtl fusta_llit
+Ns 37.254902
+Ka 1.000000 1.000000 1.000000
+Kd 0.782138 0.616779 0.418346
+Ks 0.266098 0.266098 0.266098
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd -s 1.700000 1.700000 1.700000 obj/bed/rojiza.jpg
+
+newmtl sobrecolchon
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.649339 0.649414 0.593899
+Ks 0.236860 0.236860 0.236860
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd obj/bed/patron1.jpg
+map_Bump -bm 0.030000 -o 0.200000 0.200000 0.200000 obj/bed/patron1.jpg

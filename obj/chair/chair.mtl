@@ -1,0 +1,23 @@
+# Blender MTL File: 'table_and_chairs_yafaray.blend'
+# Material Count: 2
+
+newmtl coixi_cadira
+Ns 82.352941
+Ka 1.000000 1.000000 1.000000
+Kd 0.520784 0.216471 0.116078
+Ks 0.002000 0.002000 0.002000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl fusta_taula
+Ns 82.352941
+Ka 1.000000 1.000000 1.000000
+Kd 0.592941 0.483137 0.341961
+Ks 0.470706 0.470706 0.470706
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd  obj/chair/tipical.jpg

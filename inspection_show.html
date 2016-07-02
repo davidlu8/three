@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D验房</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <style>
+        body {
+            font-family: Monospace;
+            background-color: #f0f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+    <script src="src/three.js"></script>
+    <script src="js/objects/ShadowMesh.js"></script>
+    <script src="js/renderers/Projector.js"></script>
+    <script src="js/renderers/CanvasRenderer.js"></script>
+    <script src="js/controls/EditorControls.js"></script>
+    <script src="js/controls/TransformControls.js"></script>
+    <script src="js/modules/builder.js"></script>
+    <script src="js/modules/operator.js"></script>
+    <script src="js/modules/loader.js"></script>
+    <script src="js/modules/functions.js"></script>
+    <script src="js/loaders/DDSLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div class="operate-wrapper" id="operate-block" name="bar">
+    <div class="column">
+        <a href="javascript:controller('mark')"><img src="images/btn-delete.png" width="30" class="tool-button" id="mark-play" /></a>
+        <a href="javascript:controller('mark')"><img src="images/btn-delete-active.png" width="30" class="tool-button" id="mark-stop" style="display: none" /></a>
+    </div>
+    <div class="column">
+        <a href="javascript:controller('mark-delete')"><img src="images/btn-clean.png" width="30" class="tool-button" id="clean-play" /></a>
+        <a href="javascript:controller('mark-delete')"><img src="images/btn-clean-active.png" width="30" class="tool-button" id="clean-stop" style="display: none" /></a>
+    </div>
+</div>
+<div class="play-wrapper" name="bar">
+    <div class="column">
+        <a href="javascript:play01()">
+            <img src="images/btn-play.png" width="30" id="play-button" class="tool-button"/>
+            <img src="images/btn-stop.png" width="30" id="stop-button" class="tool-button" style="display: none"/>
+        </a>
+    </div>
+</div>
+<script>
+    var builder = new Builder(300, 300);
+    builder.initialize();
+    builder.initBackground();
+
+    var operator = new Operator();
+    operator.initialize();
+
+    var loader = new Loader();
+    loader.initialize();
+
+    add('house');
+    operator.setMode01('dev');
+
+    animate();
+</script>
+</body>
+</html>

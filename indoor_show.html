@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟装修</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <style>
+        body {
+            font-family: Monospace;
+            background-color: #f0f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+    </style>
+    <script src="src/three.js"></script>
+    <script src="js/objects/ShadowMesh.js"></script>
+    <script src="js/renderers/Projector.js"></script>
+    <script src="js/renderers/CanvasRenderer.js"></script>
+    <script src="js/controls/EditorControls.js"></script>
+    <script src="js/controls/TransformControls.js"></script>
+    <script src="js/modules/builder.js"></script>
+    <script src="js/modules/operator.js"></script>
+    <script src="js/modules/loader.js"></script>
+    <script src="js/modules/functions.js"></script>
+    <script src="js/loaders/DDSLoader.js"></script>
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+<div class="tool-wrapper" id="play-block" name="bar">
+    <div class="row">
+        <a href="javascript:add('chair')"><img src="images/btn-01.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+    <div class="row">
+        <a href="javascript:add('desk')"><img src="images/btn-02.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+    <div class="row">
+        <a href="javascript:add('sofa')"><img src="images/btn-03.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+    <div class="row">
+        <a href="javascript:add('bed')"><img src="images/btn-04.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+    <div class="row">
+        <a href="javascript:add('cabinet')"><img src="images/btn-05.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+    <div class="row">
+        <a href="javascript:add('tv')"><img src="images/btn-06.png" width="30" name="light" class="tool-button" /></a>
+    </div>
+</div>
+<div class="operate-wrapper" id="operate-block" name="bar">
+    <div class="column">
+        <a href="javascript:controller('rotation-right')"><img src="images/btn-right.png" width="30" class="tool-button"/></a>
+    </div>
+    <div class="column">
+        <a href="javascript:controller('rotation-left')"><img src="images/btn-left.png" width="30" class="tool-button"/></a>
+    </div>
+    <div class="column">
+        <a href="javascript:controller('delete')"><img src="images/btn-delete.png" width="30" class="tool-button"/></a>
+    </div>
+</div>
+<div class="play-wrapper" name="bar">
+    <div class="column">
+        <a href="javascript:play()">
+            <img src="images/btn-play.png" width="30" id="play-button" class="tool-button"/>
+            <img src="images/btn-stop.png" width="30" id="stop-button" class="tool-button" style="display: none"/>
+        </a>
+    </div>
+</div>
+<div class="info-wrapper" id="info-block" name="bar" style="display: none"></div>
+<script>
+    var builder = new Builder(300, 300);
+    builder.initialize();
+    builder.initBackground();
+    builder.initWall();
+    //builder.initObjects();
+
+    var operator = new Operator();
+    operator.initialize();
+    operator.setMode('dev');
+
+    var loader = new Loader();
+    loader.initialize();
+
+    animate();
+</script>
+</body>
+</html>
